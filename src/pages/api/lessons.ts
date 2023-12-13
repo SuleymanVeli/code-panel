@@ -14,6 +14,8 @@ export default async function handler(
 
       const data = await LessonModel.find()
 
+      console.log("data",data)
+
       res.status(200).json({
         status: 200,
         data: data
