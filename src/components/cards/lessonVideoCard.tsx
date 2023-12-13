@@ -8,7 +8,7 @@ type PropType = {
     videoId: string
 }
 
-const index = ({ video, videoId }: PropType) => {
+const Index = ({ video, videoId }: PropType) => {
 
     const [open, setOpen] = useState(false);
 
@@ -34,4 +34,4 @@ const index = ({ video, videoId }: PropType) => {
         </Dialog>
     </div>
 }
-export default index
+export default Index
