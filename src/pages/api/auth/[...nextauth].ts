@@ -7,19 +7,21 @@ import { UserModel } from '@/models';
 
 const getProfile = async (profile:any) =>{ 
 
-   // const data = await UserModel.findOne({email: profile.email, status: 'active'})
+    await dbConnect()
+
+    const data = await UserModel.findOne({email: profile.email, status: 'active'})
 
     console.log("profile")
 
-    // if(data){
-    //     return { 
-    //         role: data.roole,
-    //         id: profile.sub,
-    //         name: profile.name,
-    //         email: profile.email,
-    //         image: profile.picture
-    //     }
-    // }
+    if(data){
+        return { 
+            role: data.roole,
+            id: profile.sub,
+            name: profile.name,
+            email: profile.email,
+            image: profile.picture
+        }
+    }
 
     return { 
         role: profile.role ?? "user",
@@ -102,20 +104,20 @@ export default NextAuth({
 
             //  console.log(user, account, profile, email, credentials)
 
-            // await dbConnect()
+            await dbConnect()
 
-            // const data = await UserModel.findOne({email: user.email, status: 'active'})
+            const data = await UserModel.findOne({email: user.email, status: 'active'})
 
-            // console.log('signIn')
+            console.log('signIn')
 
-            // if (!data) return false;   
+            if (!data) return false;   
             
-            // if(!data.signed) {
-            //     data.name = user.name || data.name,
-            //     data.image = user.image || data.image;
-            //     data.signed = true;
-            //     await data.save()
-            // }
+            if(!data.signed) {
+                data.name = user.name || data.name,
+                data.image = user.image || data.image;
+                data.signed = true;
+                await data.save()
+            }
 
             return true;
         },
