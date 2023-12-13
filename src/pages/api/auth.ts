@@ -1,31 +1,28 @@
 import dbConnect from '@/lib/dbConnect'
-import { LessonModel } from '@/models'
-import { Lesson } from '@/models/lesson'
 import { Response } from '@/types/response'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response<Lesson[]>>
+  res: NextApiResponse<Response<string>>
 ) {
   try {
     await dbConnect()
-    if(req.method === 'GET'){
+  
 
-      const data = await LessonModel.find()
-      
+    if (req.method === 'POST') {
 
-      res.status(200).json({
-        status: 200,
-        data: data
+        
+      res.status(201).json({
+        status: 201
       })
-
     }
+
 
 
   } catch (error) {
     res.status(500).json({
-      data: [],
+      data: '',
       status: 500
     })
   }

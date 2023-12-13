@@ -1,6 +1,6 @@
-import { Button, Input } from "@material-tailwind/react";
 import React from "react";
-import GoogleIcon from '@/components/icons/google'
+import { signIn } from 'next-auth/react';
+
 
 export default function Login(): JSX.Element {
     return (
@@ -8,10 +8,10 @@ export default function Login(): JSX.Element {
             <div
                 className=" grid h-screen w-screen place-items-center bg-slate-800 px-4 text-sm font-medium"
             >
-                <div className="w-full max-w-sm rounded-lg bg-slate-700/30 shadow">
-                    <form className="p-4 md:p-5 lg:p-6">
+                <div className="w-full max-w-sm rounded-lg bg-slate-700/30 shadow">                  
                         <div className="grid gap-y-3">
                             <button
+                                onClick={() => signIn('github', { callbackUrl: '/' })}
                                 className="flex items-center justify-center gap-x-2 rounded-md border border-slate-600 bg-slate-700 py-3 px-4 text-slate-300 transition hover:text-purple-400"
                             >
                                 <svg
@@ -30,6 +30,7 @@ export default function Login(): JSX.Element {
                                 Sign in with Github
                             </button>
                             <button
+                                onClick={() => signIn('google', { callbackUrl: '/' })}
                                 className="flex items-center justify-center gap-x-2 rounded-md border border-slate-600 bg-slate-700 py-3 px-4 text-slate-300 transition hover:text-purple-400"
                             >
                                 <svg
@@ -55,7 +56,7 @@ export default function Login(): JSX.Element {
                             <span className="mx-3 text-slate-500">or</span>
                             <hr className="w-full border-slate-600" />
                         </div>
-
+                    
                         <div className="grid gap-y-3">
                             <input
                                 className="focus:border-purple-400 rounded-md border border-slate-600 bg-slate-700 py-3 px-4 text-slate-200 outline-none transition placeholder:text-slate-400"
@@ -79,8 +80,7 @@ export default function Login(): JSX.Element {
                                 </svg>
                                 Sign in with Email
                             </button>
-                        </div>
-                    </form>
+                        </div>                  
                 </div>
             </div>
         </section>
