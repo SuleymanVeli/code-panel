@@ -71,8 +71,8 @@ export default function Edit() {
   const [list, setList] = useState<Lesson[]>([])
 
   const handleData = ()=>{
-    fetcher('/api/lessons').then((data: Response<Lesson[]>)=>{
-      setList(data.data || [])
+    fetcher('https://jsonplaceholder.typicode.com/todos').then((data: Response<Lesson[]>)=>{
+     // setList(data.data || [])
     })  
   }
 
