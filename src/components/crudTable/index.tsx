@@ -1,4 +1,4 @@
-import { PencilIcon, TrashIcon, PlusIcon } from "@heroicons/react/24/solid";
+import { PencilIcon, TrashIcon, PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
 import {
     ArrowDownTrayIcon,
     MagnifyingGlassIcon,
@@ -95,7 +95,7 @@ export default function CrudTable<T>({ data, types, title, save, defaultValue, d
 
     return (
         <>
-            <Card className="h-full w-full">
+            <Card shadow={false} className="h-full w-full border">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-4 px-4 flex gap-3 md:items-center">
                         <Typography variant="h5" color="blue-gray">
@@ -115,7 +115,7 @@ export default function CrudTable<T>({ data, types, title, save, defaultValue, d
                                 {map(filter(types, (t: CrudDataType) => t.show || t.type === "link"), (type: CrudDataType, i) => (
                                     <th
                                         key={i}
-                                        className="border-y border-blue-gray-100 bg-blue-gray-50/50 p-4"
+                                        className="border-y border-blue-gray-100  p-4"
                                     >
                                         <Typography
                                             variant="small"
@@ -127,7 +127,7 @@ export default function CrudTable<T>({ data, types, title, save, defaultValue, d
                                     </th>
                                 ))}
                                 <th
-                                    className="border-y border-blue-gray-100 bg-blue-gray-50/50"
+                                    className="border-y border-blue-gray-100"
                                 >
 
                                 </th>
@@ -258,7 +258,7 @@ export default function CrudTable<T>({ data, types, title, save, defaultValue, d
                                                     <IconButton variant="text" onClick={() => {
                                                         handleRemoveArrayProp(dataArrayValue, type.prop)
                                                     }}>
-                                                        <PlusIcon className="h-6 w-6" />
+                                                        <TrashIcon className="h-4 w-4 text-red-500" />
                                                     </IconButton>
                                                 </div>
                                                 {map(type.props, (typeArray, i2) =>

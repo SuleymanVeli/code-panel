@@ -12,7 +12,7 @@ export default async function handler(
     await dbConnect()
     if (req.method === 'GET') {
 
-      const data = await LessonModel.find()
+      const data = await LessonModel.find().sort({ number: -1})
 
       console.log("data",data)
 

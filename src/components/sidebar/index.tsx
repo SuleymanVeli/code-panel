@@ -49,7 +49,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-2rem)] p-2 flex flex-col border-r border-solid border-r-borderColor">
+    <div className="h-[calc(100vh-2rem)] p-2 flex flex-col bg-layout">
       <Tooltip id="link-tooltip" place="right" style={{ backgroundColor:"#e9eef5", color:"#1e293b", padding:"3px 10px"}} className="z-50" />
       <div className="mb-2 flex items-center gap-4 p-4">       
 

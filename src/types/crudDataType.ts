@@ -1,6 +1,6 @@
 export type CrudDataTypeString = {
     prop: string,
-    type: "string" | "text" | "editor" | "image" | "video",
+    type: "string" | "text" | "editor" | "image" | "video" | "number",
     name: string,
     show?: boolean,
 }

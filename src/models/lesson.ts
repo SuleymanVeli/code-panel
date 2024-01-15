@@ -26,6 +26,9 @@ export class Lesson {
 
   @prop({ default: () => new Date() })
   createdAt?: Date;
+
+  @prop({ default: () => 0 })
+  number?: number;
 }
 
 export class Video {

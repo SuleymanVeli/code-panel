@@ -15,6 +15,12 @@ const types: CrudDataType[] = [
     url: "/lessons/"
   },
   {
+    prop: 'number',
+    name: "No",
+    type: "number",
+    show: true
+  },
+  {
     prop: 'name',
     name: "Name",
     type: "string",

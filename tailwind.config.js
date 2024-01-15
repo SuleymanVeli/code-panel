@@ -16,7 +16,9 @@ module.exports = withMT({
           200: "#EFEFEF",          
         },
         borderColor: "#e5e7eb",
-        navColor: "hsla(0,0%,100%,.8)"      
+        navColor: "hsla(0,0%,100%,.8)",
+        layout: '#F8FAFD',
+         
       },
       animation: {
         'gradient-animate': 'gradient 15s ease infinite',

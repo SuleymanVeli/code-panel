@@ -1,5 +1,5 @@
 import { Avatar, IconButton, Input, Option, Select, Textarea, Typography } from "@material-tailwind/react";
-import { map } from "lodash";
+import { map, toNumber } from "lodash";
 import classNames from "classnames";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import uploadImage from "@/utilities/uploadImage";
@@ -19,7 +19,7 @@ type PropType = {
     label: string,
     value: any,
     options?: string[],
-    type: "string" | "text" | "editor" | "image" | "video" | "select" | "link",
+    type: "string" | "text" | "editor" | "image" | "video" | "select" | "link" | "number",
     onChange: (value: any) => Promise<void> | void,
 }
 
@@ -32,6 +32,15 @@ export default function RenderInput({ label, value, options, type, onChange }: P
             value={value}
             onChange={(e) => {
                 onChange(e.target.value)
+            }}
+        />);
+
+    const renderNumber = (label: string, value: string, onChange: (value: any) => void) => (
+        <Input crossOrigin type="number" label={label}
+            value={value}
+            onChange={(e) => {
+                if(e.target.value) onChange(toNumber(e.target.value))
+                else onChange(0)
             }}
         />);
 
@@ -105,6 +114,12 @@ export default function RenderInput({ label, value, options, type, onChange }: P
     if (type === 'string') return (
         <div className=" mb-3">
             {renderString(label, value, onChange)}
+        </div>
+    )
+
+    if (type === 'number') return (
+        <div className=" mb-3">
+            {renderNumber(label, value, onChange)}
         </div>
     )
 
