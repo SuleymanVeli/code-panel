@@ -16,13 +16,13 @@ export default function ReactMarkdown({ children }: PropType) {
           const { className, node, ...rest } = props
           const match = /language-(\w+)/.exec(className || '')
           return match ? (<div className='rounded-md overflow-hidden'>
-               <SyntaxHighlighter
-              {...rest}
-              PreTag="div"
-              children={String(props.children).replace(/\n$/, '')}
+               <SyntaxHighlighter             
+              PreTag="div"             
               language={match[1]}
               style={vscDarkPlus}
-            />
+            >
+              {String(props.children).replace(/\n$/, '')}
+            </SyntaxHighlighter>
           </div>
           
           ) : (

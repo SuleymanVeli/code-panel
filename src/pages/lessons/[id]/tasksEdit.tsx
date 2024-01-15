@@ -36,19 +36,20 @@ const types: CrudDataType[] = [
 
 const defaultValue: Task = { 
     answerType: "",
+    answers:[],
     description: "",
     name: "" 
 }
 
 export default function Tasks() {
-  const [list, setList] = useState<Lesson[]>([])
+  const [list, setList] = useState<Task[]>([])
 
   const router = useRouter()
 
   const { id } = router.query;
 
   const handleData = () => {
-    fetcher(`/api/lessons/${id}/tasks`).then((data: Response<Lesson[]>) => {
+    fetcher(`/api/lessons/${id}/tasks`).then((data: Response<Task[]>) => {
       setList(data.data || [])
     })
   }
@@ -57,19 +58,19 @@ export default function Tasks() {
     handleData()
   }, [])
 
-  const handleSave = async (value: Lesson): Promise<void> => {
+  const handleSave = async (value: Task): Promise<void> => {
     await fetch(`/api/lessons/${id}/tasks`, { method: 'POST', body: JSON.stringify(value) })
     handleData()
     return;
   }
 
-  const handleDelete = async (value: Lesson): Promise<void> => {
+  const handleDelete = async (value: Task): Promise<void> => {
     await fetch(`/api/lessons${id}/tasks`, { method: 'DELETE', body: JSON.stringify(value) })
     handleData()
     return;
   }
 
   return (
-    <Table data={list} types={types} save={handleSave} deleteValue={handleDelete} title="Lesson" defaultValue={defaultValue} />
+    <Table data={list} types={types} save={handleSave} deleteValue={handleDelete} title="Task" defaultValue={defaultValue} />
   )
 }

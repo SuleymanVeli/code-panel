@@ -24,7 +24,7 @@ export default function Home() {
   const [videos, setVideos] = useState<Video[]>([]);
   const [activeVideo, setActiveVideo] = useState<Video | null>(null);
 
-  const player = useRef<ReactPlayer>();
+  const player = useRef<any>();
 
   const { user } = useUser()
 

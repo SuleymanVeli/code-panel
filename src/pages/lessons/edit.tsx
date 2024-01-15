@@ -107,6 +107,7 @@ const defaultValue: Lesson = {
   infos: [],
   files: [],
   description: "",
+  tasks:[],
   name: ""
 }
 
