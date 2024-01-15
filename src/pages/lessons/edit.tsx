@@ -9,7 +9,7 @@ import { Response } from "@/types/response";
 
 const types: CrudDataType[] = [
   {
-    prop: 'name',
+    prop: '_id',
     name: "_id",
     type: "link",
     url: "/lessons/"
@@ -21,47 +21,92 @@ const types: CrudDataType[] = [
     show: true
   },
   {
-    prop: 'text',
-    name: "Text",
-    type: "editor",    
+    prop: 'description',
+    name: "Description",
+    type: "string",
+    show: true
   },
   {
-    prop: 'text1',
-    name: "Text 1",
-    type: "select",    
-    options:[
-      "aaa",
-      "bbbb",
-      "sssss"
+    prop: 'infos',
+    name: "Info",
+    type: "array",
+    defaultValue: {
+      title: "",
+      description: ""
+    },
+    props: [
+      {
+        prop: 'title',
+        name: "Title",
+        type: "string",
+      },
+      {
+        prop: 'description',
+        name: "Description",
+        type: "editor",
+      }
     ]
   },
   {
-    prop: 'list',
-    name: "List",
+    prop: 'videos',
+    name: "Video",
     type: "array",
-    defaultValue:{
-      name:"",
-      video:""
+    defaultValue: {
+      title: "",
+      url: ""
     },
-    props:[
+    props: [
       {
-        prop: 'name',
-        name: "Name",
+        prop: 'title',
+        name: "Title",
         type: "string",
-      }, 
+      },
       {
-        prop: 'video',
+        prop: 'url',
         name: "Video",
         type: "string",
       }
     ]
-  }
+  },
+  {
+    prop: 'files',
+    name: "File",
+    type: "array",
+    defaultValue: {
+      title: "",
+      type: "",
+      url: ""
+    },
+    props: [
+      {
+        prop: 'title',
+        name: "Title",
+        type: "string",
+      },
+      {
+        prop: 'type',
+        name: "Type",
+        type: "select",
+        options: [
+          'pdf',
+          'word'
+        ]
+      },
+      {
+        prop: 'url',
+        name: "File",
+        type: "string",
+      }
+    ]
+  },
+
 ]
 
 const defaultValue: Lesson = {
-  list:[],
-  text:"",
-  text1:"",
+  videos: [],
+  infos: [],
+  files: [],
+  description: "",
   name: ""
 }
 
@@ -70,10 +115,10 @@ export default function Edit() {
 
   const [list, setList] = useState<Lesson[]>([])
 
-  const handleData = ()=>{
-    fetcher('/api/lessons').then((data: Response<Lesson[]>)=>{
+  const handleData = () => {
+    fetcher('/api/lessons').then((data: Response<Lesson[]>) => {
       setList(data.data || [])
-    })  
+    })
   }
 
   useEffect(() => {
@@ -93,6 +138,6 @@ export default function Edit() {
   }
 
   return (
-      <Table data={list} types={types} save={handleSave} deleteValue={handleDelete} title="Lesson" defaultValue={defaultValue} />
+    <Table data={list} types={types} save={handleSave} deleteValue={handleDelete} title="Lesson" defaultValue={defaultValue} />
   )
 }

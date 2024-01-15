@@ -17,6 +17,7 @@ const getProfile = async (profile:any) =>{
         return { 
             role: data.roole,
             id: profile.sub,
+            _id: data._id,
             name: profile.name,
             email: profile.email,
             image: profile.picture
@@ -108,8 +109,7 @@ export default NextAuth({
 
             const data = await UserModel.findOne({email: user.email, status: 'active'})
 
-            console.log('signIn')
-
+          
             if (!data) return false;   
             
             if(!data.signed) {
@@ -123,15 +123,19 @@ export default NextAuth({
         },
         async redirect({ url, baseUrl }) { return baseUrl },
         async session({ session, token, user }) { 
-            console.log('session')
+            
             const newSession:any = { ...session}
             newSession.user.role = token.role
+            newSession.user._id = token._id
+
             return newSession
         },
       
         async jwt({ token, user, account, profile }) { 
-            console.log('jwt')
-            if(user) token.role = (user as any).role
+            if(user){
+                token.role = (user as any).role
+                token._id = (user as any)._id                
+            } 
             return token 
         }
     },

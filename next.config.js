@@ -1,7 +1,17 @@
 /** @type {import('next').NextConfig} */
+const removeImports = require('next-remove-imports')();
+const withMDX = require('@next/mdx')()
+
+
+module.exports = removeImports({});
+
 const nextConfig = {
   transpilePackages: ['@mdxeditor/editor', 'react-diff-view'],
   reactStrictMode: true,
+  images: {
+    domains: ['lh3.googleusercontent.com', 'avatars.githubusercontent.com'],
+  },
+  pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   webpack: (config) => {
     // this will override the experiments
     config.experiments = { ...config.experiments, topLevelAwait: true };
@@ -11,4 +21,4 @@ const nextConfig = {
   },
 }
 
-module.exports = nextConfig
+module.exports = withMDX(nextConfig)

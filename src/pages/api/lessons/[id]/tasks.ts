@@ -1,24 +1,29 @@
 import dbConnect from '@/lib/dbConnect'
 import { LessonModel } from '@/models'
-import { Lesson } from '@/models/lesson'
+import { Task } from '@/models/lesson'
 import { Response } from '@/types/response'
+import { filter, find, toString } from 'lodash'
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<Response<Lesson[] | Lesson>>
+  res: NextApiResponse<Response<Task[] | Task>>
 ) {
+
+  const { id } = req.query;
+
   try {
     await dbConnect()
+
+    const lesson = await LessonModel.findOne( {_id: id})
+
+    console.log(lesson)
+
     if (req.method === 'GET') {
-
-      const data = await LessonModel.find()
-
-      console.log("data",data)
 
       res.status(200).json({
         status: 200,
-        data: data
+        data: lesson?.tasks
       })
     }
 
@@ -29,13 +34,21 @@ export default async function handler(
       let data = null;
 
       if (body._id) {
-        data = await LessonModel.findByIdAndUpdate(body._id,
-          body
-        )
-      }
+
+       const task = find(lesson?.tasks, (t: Task)=> toString(t._id) == body._id )
+
+       if(task){
+        task.answerType = body.answerType;
+        task.description = body.description;
+        task.name = body.name;        
+       }
+    }
       else {
-        data = await LessonModel.create(body)
+        if(lesson && lesson?.tasks) lesson.tasks = []
+        lesson?.tasks.push(body)
       }
+
+      await lesson?.save()
 
       res.status(201).json({
         status: 201
@@ -46,8 +59,11 @@ export default async function handler(
     if (req.method === 'DELETE') {
 
       const { _id } = JSON.parse(req.body);
+      
+      if(lesson)
+      lesson.tasks = filter(lesson?.tasks, (t: Task)=> toString(t._id) != _id )
 
-      await LessonModel.findByIdAndDelete(_id)
+      await lesson?.save()
 
       res.status(200).json({
         status: 200,

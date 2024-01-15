@@ -151,7 +151,7 @@ export default function CrudTable<T>({ data, types, title, save, defaultValue, d
                                                     <td key={index} className={classes}>
                                                         {
                                                             type.type === "link" ?
-                                                                <Link href={ type.url+ (item as any)[type.prop]} >
+                                                                <Link href={type.url + (item as any)[type.prop]} >
                                                                     <Typography
                                                                         variant="small"
                                                                         color="blue-gray"
@@ -222,93 +222,95 @@ export default function CrudTable<T>({ data, types, title, save, defaultValue, d
                     </Button>
                 </CardFooter> */}
             </Card>
-            <Dialog open={open} handler={noop}>
-                <DialogHeader>Create</DialogHeader>
-                <DialogBody>
-                    {
-                        map(types, (type, i) => {
-                            if (type.type !== "array" && type.type !== "select") return (
-                                <RenderInput
-                                    label={type?.name}
-                                    key={i}
-                                    type={type.type}
-                                    value={dataValue && dataValue[type?.prop]}
-                                    onChange={(value) => { handleUpdateProp(value, type?.prop) }}
-                                />
-                            )
-                            if (type.type === "select") return (
-                                <RenderInput
-                                    label={type?.name}
-                                    key={i}
-                                    type={type.type}
-                                    value={dataValue && dataValue[type?.prop]}
-                                    options={type.options}
-                                    onChange={(value) => { handleUpdateProp(value, type?.prop) }}
-                                />
-                            )
-                            if (type.type === "array") {
-                                return <div>
-                                    {dataValue && map(dataValue[type?.prop], (dataArrayValue, i: number) => {
-                                        return <div key={i}>
-                                            <div className="flex gap-3">
-                                                <Typography className="my-2">
-                                                    {type.name + " " + i}
-                                                </Typography>
-                                                <IconButton variant="text" onClick={() => {
-                                                    handleRemoveArrayProp(dataArrayValue, type.prop)
-                                                }}>
-                                                    <PlusIcon className="h-6 w-6" />
-                                                </IconButton>
+            <Dialog size="lg" open={open} handler={noop} className="overflow-hidden">
+                <div className="overflow-y-auto max-h-[80vh] relative">
+                    <DialogHeader>Create</DialogHeader>
+                    <DialogBody className="static">
+                        {
+                            map(types, (type, i) => {
+                                if (type.type !== "array" && type.type !== "select") return (
+                                    <RenderInput
+                                        label={type?.name}
+                                        key={i}
+                                        type={type.type}
+                                        value={dataValue && dataValue[type?.prop]}
+                                        onChange={(value) => { handleUpdateProp(value, type?.prop) }}
+                                    />
+                                )
+                                if (type.type === "select") return (
+                                    <RenderInput
+                                        label={type?.name}
+                                        key={i}
+                                        type={type.type}
+                                        value={dataValue && dataValue[type?.prop]}
+                                        options={type.options}
+                                        onChange={(value) => { handleUpdateProp(value, type?.prop) }}
+                                    />
+                                )
+                                if (type.type === "array") {
+                                    return <div>
+                                        {dataValue && map(dataValue[type?.prop], (dataArrayValue, i: number) => {
+                                            return <div key={i}>
+                                                <div className="flex gap-3">
+                                                    <Typography className="my-2">
+                                                        {type.name + " " + i}
+                                                    </Typography>
+                                                    <IconButton variant="text" onClick={() => {
+                                                        handleRemoveArrayProp(dataArrayValue, type.prop)
+                                                    }}>
+                                                        <PlusIcon className="h-6 w-6" />
+                                                    </IconButton>
+                                                </div>
+                                                {map(type.props, (typeArray, i2) =>
+                                                    typeArray.type != "array" && (
+                                                        typeArray.type !== "select" ? <RenderInput
+                                                            label={typeArray?.name}
+                                                            key={i2}
+                                                            type={typeArray.type}
+                                                            value={dataArrayValue && dataArrayValue[typeArray?.prop]}
+                                                            onChange={(value) => {
+                                                                handleUpdateArrayProp(value, type.prop, typeArray?.prop, i)
+                                                            }}
+                                                        /> : <RenderInput
+                                                            label={typeArray?.name}
+                                                            key={i2}
+                                                            type={typeArray.type}
+                                                            options={typeArray.options}
+                                                            value={dataArrayValue && dataArrayValue[typeArray?.prop]}
+                                                            onChange={(value) => {
+                                                                handleUpdateArrayProp(value, type.prop, typeArray?.prop, i)
+                                                            }}
+                                                        />
+                                                    )
+                                                )}
                                             </div>
-                                            {map(type.props, (typeArray, i2) =>
-                                                typeArray.type != "array" && (
-                                                    typeArray.type !== "select" ? <RenderInput
-                                                        label={typeArray?.name}
-                                                        key={i2}
-                                                        type={typeArray.type}
-                                                        value={dataArrayValue && dataArrayValue[typeArray?.prop]}
-                                                        onChange={(value) => {
-                                                            handleUpdateArrayProp(value, type.prop, typeArray?.prop, i)
-                                                        }}
-                                                    /> : <RenderInput
-                                                        label={typeArray?.name}
-                                                        key={i2}
-                                                        type={typeArray.type}
-                                                        options={typeArray.options}
-                                                        value={dataArrayValue && dataArrayValue[typeArray?.prop]}
-                                                        onChange={(value) => {
-                                                            handleUpdateArrayProp(value, type.prop, typeArray?.prop, i)
-                                                        }}
-                                                    />
-                                                )
-                                            )}
-                                        </div>
-                                    })}
+                                        })}
 
-                                    <IconButton variant="text" onClick={() => {
-                                        handleAddArrayProp(type.defaultValue, type.prop)
-                                    }}>
-                                        <PlusIcon className="h-6 w-6" />
-                                    </IconButton>
-                                </div>
-                            }
-                            return null;
-                        })
-                    }
-                </DialogBody>
-                <DialogFooter>
-                    <Button
-                        variant="text"
-                        color="red"
-                        onClick={handleClose}
-                        className="mr-1"
-                    >
-                        <span>Cancel</span>
-                    </Button>
-                    <Button variant="gradient" color="green" onClick={handleSave}>
-                        <span>Save</span>
-                    </Button>
-                </DialogFooter>
+                                        <Button variant="text" className="flex items-center gap-3" onClick={() => {
+                                            handleAddArrayProp(type.defaultValue, type.prop)
+                                        }}>
+                                          Add {type.name}  <PlusIcon className="h-6 w-6" />
+                                        </Button>
+                                    </div>
+                                }
+                                return null;
+                            })
+                        }
+                    </DialogBody>
+                    <DialogFooter>
+                        <Button
+                            variant="text"
+                            color="red"
+                            onClick={handleClose}
+                            className="mr-1"
+                        >
+                            <span>Cancel</span>
+                        </Button>
+                        <Button variant="gradient" color="green" onClick={handleSave}>
+                            <span>Save</span>
+                        </Button>
+                    </DialogFooter>
+                </div>
             </Dialog>
             <Dialog size="xs" open={openDelete !== null} handler={() => setOpenDelete(null)}>
                 <DialogHeader>

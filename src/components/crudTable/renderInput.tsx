@@ -4,10 +4,15 @@ import classNames from "classnames";
 import { TrashIcon } from "@heroicons/react/24/solid";
 import uploadImage from "@/utilities/uploadImage";
 import getImageInfoFromURL from "@/utilities/getImageInfoFromURL";
-import { useRef } from "react";
-import { MDXEditor, MDXEditorMethods, headingsPlugin } from "@mdxeditor/editor";
-import '@mdxeditor/editor/style.css'
-import InitializedMDXEditor from "../mdxEditor/InitializedMDXEditor";
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+import dynamic from "next/dynamic";
+
+
+const MDEditor = dynamic(
+  () => import("@uiw/react-md-editor"),
+  { ssr: false }
+);
 
 
 type PropType = {
@@ -15,13 +20,12 @@ type PropType = {
     value: any,
     options?: string[],
     type: "string" | "text" | "editor" | "image" | "video" | "select" | "link",
-    onChange: (value: any) => Promise<void> | void
+    onChange: (value: any) => Promise<void> | void,
 }
 
 
 export default function RenderInput({ label, value, options, type, onChange }: PropType) {
 
-    const ref = useRef<MDXEditorMethods>(null);
 
     const renderString = (label: string, value: string, onChange: (value: any) => void) => (
         <Input crossOrigin label={label}
@@ -91,40 +95,39 @@ export default function RenderInput({ label, value, options, type, onChange }: P
     );
 
     const renderEditor = (label: string, value: string, onChange: (value: any) => void) => (
-        <>
-           <button onClick={() => ref.current?.setMarkdown('new markdown')}>Set new markdown</button>
-      <button onClick={() => console.log(ref.current?.getMarkdown())}>Get markdown</button>
-            <InitializedMDXEditor editorRef={ref} markdown='hello world' onChange={console.log} />        
-        </>
+        <MDEditor
+            value={value}
+            onChange={onChange}
+        />
     )
       
 
     if (type === 'string') return (
-        <div className="w-72 mb-3">
+        <div className=" mb-3">
             {renderString(label, value, onChange)}
         </div>
     )
 
     if (type === 'text') return (
-        <div className="w-72 mb-3">
+        <div className="mb-3">
             {renderText(label, value, onChange)}
         </div>
     )
 
     if (type === 'select') return (
-        <div className="w-72 mb-3">
+        <div className="mb-3">
             {renderSelect(label, value, onChange, options)}
         </div>
     )
 
     if (type === 'image') return (
-        <div className="w-72 mb-3">
+        <div className="mb-3">
             {renderImage(label, value, onChange)}
         </div>
     )
 
     if (type === 'editor') return (
-        <div className="w-72 mb-3">
+        <div className="mb-3">
             {renderEditor(label, value, onChange)}
         </div>
     )

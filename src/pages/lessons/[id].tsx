@@ -1,43 +1,194 @@
-import FileCard from "@/components/cards/lessonFileCard";
+import { Button, Card, ListItem, Progress, Tab, TabPanel, Tabs, TabsBody, TabsHeader } from "@material-tailwind/react";
+import { BsFileEarmarkPdfFill } from "react-icons/bs";
+import { FaDownload, FaPlay } from "react-icons/fa6";
+import { FaFileWord } from "react-icons/fa6";
+import { FaPhotoVideo } from "react-icons/fa";
+import { useEffect, useRef, useState } from "react";
+import ReactPlayer from "react-player";
+import { useUser } from "@/providers/userProvider";
+import fetcher from "@/utilities/fetcher";
+import { useRouter } from "next/router";
+import { Response } from "@/types/response";
+import { Lesson, VideoProgress } from "@/models/lesson";
+import { map, find } from "lodash";
+import { Video } from "@/types/lesson";
+import ReactMarkdown from "@/components/mkd/ReactMarkdown";
 
-import VideoCard from '@/components/cards/lessonVideoCard'
-import { Card } from "@material-tailwind/react";
 
 export default function Home() {
+  const [activeTab, setActiveTab] = useState("video");
+  const [playedSeconds, setPlayedSeconds] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const [lesson, setLesson] = useState<Lesson | null>(null);
+  const [videos, setVideos] = useState<Video[]>([]);
+  const [activeVideo, setActiveVideo] = useState<Video | null>(null);
+
+  const player = useRef<ReactPlayer>();
+
+  const { user } = useUser()
+
+  const router = useRouter()
+
+  const { id } = router.query
+
+  useEffect(() => {
+    fetcher(`/api/lessons/${id}`).then((data: Response<Lesson>) => {
+      if (data.data) {
+        setLesson(data.data)
+        const videoList = map(data.data.videos, v => ({ ...v, ...(find(v.progresses, (p: VideoProgress) => p.userId == user._id) || {}) }))
+        setVideos(videoList)
+        setActiveVideo(videoList[0])
+      }
+    })
+  }, [id])
+
+
+  useEffect(() => {
+    if (activeVideo) {
+      if (player?.current) {
+        player.current?.seekTo(100);
+      }
+    }
+  }, [activeVideo]
+  )
+
+  const handleUpdateProgress = (progress: number): void => {
+    console.log(user)
+
+    const value = { userId: user._id, videoId: activeVideo?._id, progress: progress, lessonId: id }
+    fetch('/api/lessons/progress', { method: 'POST', body: JSON.stringify(value) })
+  }
+
+  const handleProgress = (state: any) => {
+    const updated = [...videos]
+
+    const video = find(updated, v => v._id == activeVideo?._id)
+
+    if (video) {
+      console.log("bura")
+      video.progress = video?.duration === 0 ? 0 : (state.playedSeconds / video?.duration!) * 100;
+
+      console.log("bura",)
+      setActiveVideo(video)
+
+      handleUpdateProgress(video.progress)
+    }
+
+    setVideos(updated);
+  };
+
+  const handleDuration = (duration: any) => {
+
+    const updated = [...videos]
+
+    const video = find(updated, v => v._id == activeVideo?._id)
+
+    if (video) {
+      video.duration = duration;
+      setActiveVideo(video)
+    }
+
+    setVideos(updated);
+  };
+
+  console.log(activeVideo)
 
   return (
-      <>
-        <Card shadow={false} className="h-20 mb-5 rounded-2xl bg-[url('https://static.vecteezy.com/system/resources/thumbnails/008/070/315/small/geometric-low-poly-graphic-repeat-pattern-background-free-vector.jpg')] flex px-10 text-gray-50 font-bold text-2xl justify-center bg-teal-300">
-          <p>Lessons</p>
-        </Card>
-
-       <div className="grid grid-cols-2 mb-5 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5  gap-3 col-span-4">
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-          <VideoCard video="https://www.youtube.com/embed/57Ka0yPhm0s?si=S-0MUK8LrOJeKbuK" videoId="57Ka0yPhm0s" />
-        </div>  
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  gap-3">
-          <FileCard file="word" />
-          <FileCard file="js" />
-          <FileCard file="css" />
-          <FileCard file="html" />
-          <FileCard file="html" />
-          <FileCard file="html" />
-          <FileCard file="html" />
-          <FileCard file="html" />
-          <FileCard file="html" />
-          <FileCard file="pdf" />
-          <FileCard file="text" />
-          <FileCard file="cs" />
-        </div>      
-      </>
+    <Tabs value={activeTab}>
+      <TabsHeader
+        className="rounded-none border-b bg-transparent p-0"
+        indicatorProps={{
+          className:
+            "bg-transparent border-b-2 border-deep-purple-500 shadow-none rounded-none",
+        }}
+      >
+        <Tab value={"video"}
+          onClick={() => setActiveTab("video")}
+          className={activeTab === "video" ? "text-deep-purple-500" : "text-deep-purple-300"}>
+          Video
+        </Tab>
+        <Tab value={"file"}
+          onClick={() => setActiveTab("file")}
+          className={activeTab === "file" ? "text-deep-purple-500" : "text-deep-purple-300"}>
+          Fayllar
+        </Tab>
+        <Tab value={"info"}
+          onClick={() => setActiveTab("info")}
+          className={activeTab === "info" ? "text-deep-purple-500" : "text-deep-purple-300"}>
+          Qeydlər
+        </Tab>
+      </TabsHeader>
+      <TabsBody>
+        <TabPanel value="file">
+          <div className="flex flex-wrap  gap-3">
+            {map(lesson?.files, (file, i) => (<Card shadow={false} className="w-44 h-32 bg-blue-50/70 p-3">
+              <div className="flex text-blue-700 items-center justify-between">
+                {file.type === "pdf" && <BsFileEarmarkPdfFill fontSize={40} />}
+                {file.type === "word" && <FaFileWord fontSize={40} />}
+                <a href={file.url} download>
+                  <Button className="p-3 text-blue-700 rounded-full" variant="text"> <FaDownload fontSize={20} /></Button>
+                </a>
+              </div>
+              <div className="p-1">
+                <h2 title={file.title} className="text-blue-700 font-bold mt-2 whitespace-nowrap overflow-hidden text-ellipsis">{file.title}</h2>
+                <p className="text-blue-700">Lessons</p>
+              </div>
+            </Card>))}
+          </div>
+        </TabPanel>
+        <TabPanel value="info">
+          <div>
+            {map(lesson?.infos, (info, i) => (<Card shadow={false} className=" min-h-32 mb-5 bg-blue-50/70 p-3">
+              <div className=" text-blue-700 font-bold ">
+                {info.title}
+              </div>
+              <div className=" text-blue-700">
+                <ReactMarkdown>{info.description}</ReactMarkdown>
+              </div>
+            </Card>))}
+          </div>
+        </TabPanel>
+        <TabPanel value="video">
+          <div className="flex gap-8">
+            <div className="mb-5 w-full">
+              <div className="w-full pt-[56%] relative">
+                <div className="absolute rounded-xl overflow-hidden bg-black top-0 left-0 right-0 bottom-0">
+                  <ReactPlayer
+                    width={"100%"}
+                    height={"100%"}
+                    onProgress={handleProgress}
+                    onDuration={handleDuration}
+                    progressInterval={3000}
+                    ref={player}
+                    playing={true}
+                    controls={true}
+                    url={activeVideo?.url} />
+                </div>
+              </div>
+            </div>
+            <Card className="p-4 w-[400px] ">
+              <div className="flex flex-col gap-3">
+                {
+                  map(videos, (video, i) => (<ListItem key={i} selected={video._id === activeVideo?._id} className="bg-blue-50/70 p-3 flex-col items-start" onClick={() => {
+                    setActiveVideo(video)
+                  }}>
+                    <div className="flex items-center gap-4">
+                      <div className="text-blue-700 font-bold text-2xl">
+                        1
+                      </div>
+                      <h2 title={video?.title} className="text-blue-700 font-bold mt-2 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{video.title}</h2>
+                    </div>
+                    <div className="p-1 w-full">
+                      <Progress size="sm" value={video?.progress || 0} color="blue" />
+                    </div>
+                  </ListItem>))
+                }
+              </div>
+            </Card>
+          </div>
+        </TabPanel>
+      </TabsBody>
+    </Tabs>
   )
 }
