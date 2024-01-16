@@ -11,6 +11,8 @@ import {
   InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
+
+import { MdOutlinePlayLesson, MdPlayLesson } from "react-icons/md";
 import Link from "next/link";
 
 import { getSession, signOut} from 'next-auth/react';
@@ -68,7 +70,7 @@ const Sidebar = () => {
         data-tooltip-id="link-tooltip"
         data-tooltip-content="Lessons">
           <Button color="white" className="flex p-3 items-center rounded-xl">
-            <UserCircleIcon className="h-6 w-6" />
+            <MdOutlinePlayLesson className="h-6 w-6" />
           </Button>
         </Link>
         {
@@ -79,7 +81,7 @@ const Sidebar = () => {
               data-tooltip-content="Lessons edit"
               >
                 <Button color="white" className="flex p-3 items-center rounded-xl">
-                  <UserCircleIcon className="h-6 w-6" />
+                  <MdPlayLesson className="h-6 w-6" />
                 </Button>
               </Link>
               <Link href={'/users'}
