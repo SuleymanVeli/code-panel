@@ -100,22 +100,22 @@ export default function Home() {
         className="rounded-none border-b bg-transparent p-0"
         indicatorProps={{
           className:
-            "bg-transparent border-b-2 border-deep-purple-500 shadow-none rounded-none",
+            "bg-transparent border-b-2 border-black shadow-none rounded-none",
         }}
       >
         <Tab value={"video"}
           onClick={() => setActiveTab("video")}
-          className={activeTab === "video" ? "text-deep-purple-500" : "text-deep-purple-300"}>
+          className={activeTab === "video" ? "font-bold" : ""}>
           Video
         </Tab>
         <Tab value={"file"}
           onClick={() => setActiveTab("file")}
-          className={activeTab === "file" ? "text-deep-purple-500" : "text-deep-purple-300"}>
+          className={activeTab === "file" ? "font-bold" : ""}>
           Fayllar
         </Tab>
         <Tab value={"info"}
           onClick={() => setActiveTab("info")}
-          className={activeTab === "info" ? "text-deep-purple-500" : "text-deep-purple-300"}>
+          className={activeTab === "info" ? "font-bold" : ""}>
           Qeydlər
         </Tab>
       </TabsHeader>
@@ -167,7 +167,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <Card className="p-4 w-[400px] ">
+            <Card shadow={false} className="p-4 w-[400px] border-2">
               <div className="flex flex-col gap-3">
                 {
                   map(videos, (video, i) => (<ListItem key={i} selected={video._id === activeVideo?._id} className="bg-blue-50/70 p-3 flex-col items-start" onClick={() => {

@@ -4,6 +4,7 @@ import {
   Typography,
   List,
   ListItem,
+  Button,
 } from "@material-tailwind/react";
 import {
   UserCircleIcon,
@@ -49,26 +50,26 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-2rem)] p-2 flex flex-col bg-layout">
+    <div className="h-[calc(100vh-2rem)] p-2 flex flex-col ">
       <Tooltip id="link-tooltip" place="right" style={{ backgroundColor:"#e9eef5", color:"#1e293b", padding:"3px 10px"}} className="z-50" />
       <div className="mb-2 flex items-center gap-4 p-4">       
 
       </div>
-      <List className="flex flex-col min-w-min basis-full">
+      <List className="flex flex-col min-w-min gap-3 basis-full">
         <Link href={'/'} 
          data-tooltip-id="link-tooltip"
          data-tooltip-content="Home"
         >
-          <ListItem selected={selected('/')} className="flex min-w-min text-light-blue-500 hover:text-light-blue-700 items-center rounded-xl">
+          <Button color="white" className="flex p-3 items-center rounded-xl">
             <InboxIcon className="h-6 w-6" />
-          </ListItem>
+          </Button>
         </Link>
         <Link href={'/lessons'}
         data-tooltip-id="link-tooltip"
         data-tooltip-content="Lessons">
-          <ListItem selected={selected('/lessons')} className="rounded-xl">
+          <Button color="white" className="flex p-3 items-center rounded-xl">
             <UserCircleIcon className="h-6 w-6" />
-          </ListItem>
+          </Button>
         </Link>
         {
           isAdmin ?
@@ -77,16 +78,16 @@ const Sidebar = () => {
               data-tooltip-id="link-tooltip"
               data-tooltip-content="Lessons edit"
               >
-                <ListItem selected={selected('/lessons/edit')} className="rounded-xl">
+                <Button color="white" className="flex p-3 items-center rounded-xl">
                   <UserCircleIcon className="h-6 w-6" />
-                </ListItem>
+                </Button>
               </Link>
               <Link href={'/users'}
               data-tooltip-id="link-tooltip"
               data-tooltip-content="Users">
-                <ListItem selected={selected('/users')} className="rounded-xl">
+                <Button color="white" className="flex p-3 items-center rounded-xl">
                   <UserCircleIcon className="h-6 w-6" />
-                </ListItem>
+                </Button>
               </Link>
             </>
             : null
