@@ -128,7 +128,7 @@ export default function Home() {
                 {file.type === "pdf" && <BsFileEarmarkPdfFill fontSize={40} />}
                 {file.type === "word" && <FaFileWord fontSize={40} />}
                 {file.type === "media" && <FaPhotoVideo fontSize={40} />}
-                <a href={file.url} download>
+                <a href={file.url} target="_blank" download>
                   <Button className="p-3 text-blue-700 rounded-full" variant="text"> <FaDownload fontSize={20} /></Button>
                 </a>
               </div>
