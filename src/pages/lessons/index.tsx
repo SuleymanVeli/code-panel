@@ -9,7 +9,9 @@ import Image from 'next/image';
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { FiExternalLink } from "react-icons/fi";
 import Link from 'next/link';
-
+import { LiaPhotoVideoSolid } from "react-icons/lia";
+import { FaYoutube } from "react-icons/fa";
+import { FaRegFileAlt } from "react-icons/fa";
 
 export default function Home() {
 
@@ -18,8 +20,8 @@ export default function Home() {
   return (
     <div className="grid gap-3">
 
-      {map(data?.data, (item:any, i) => (
-        <Card shadow={false} className='h-24 bg-blue-50/40 p-4 flex flex-row items-center gap-6'>
+      {map(data?.data, (item:any, i) => (<Link href={`/lessons/${item?._id}`}>
+        <Card shadow={false} className='h-24 bg-blue-50/40 hover:bg-blue-50/80 p-4 flex flex-row items-center gap-6'>
             <div className=''>#{item?.number}</div>
             <div className='bg-blue-50 rounded-full p-2'>
               <Image src='/images/grip-solid.svg' className='w-10 h-10' width={40} height={40} alt='' />
@@ -28,17 +30,20 @@ export default function Home() {
               <p className='font-bold'>{item?.name}</p>
               <p>{item?.description}</p>
             </div>
-            <Link href={`/lessons/${item?._id}`}>
-              <div className='bg-blue-50 rounded-full py-2 px-4 text-deep-purple-500 hover:text-deep-purple-900 flex flex-warp items-center gap-3'>             
-                <p>Məlumatlar</p> <FiExternalLink />
-              </div>
-            </Link>
-            <Link href={`/lessons/${item?._id}/tasks`}>            
+            
+            <div className='text-indigo-700  text-[25px]'>
+              <FaYoutube/>
+            </div>
+            <div className='text-indigo-700 text-[25px] mr-4'>
+              <FaRegFileAlt />
+            </div>
+            
+            {/* <Link href={`/lessons/${item?._id}/tasks`}>            
               <div className='bg-blue-50 rounded-full py-2 px-4 text-deep-purple-500 hover:text-deep-purple-900 flex flex-wrap items-center gap-3'>              
                 <p>Tapşırıqlar</p><FiExternalLink />
               </div>
-            </Link>
-        </Card>
+            </Link> */}
+        </Card></Link>
       ))}
     </div>
   )

@@ -15,6 +15,7 @@ import { Video } from "@/types/lesson";
 import ReactMarkdown from "@/components/mkd/ReactMarkdown";
 
 
+
 export default function Home() {
   const [activeTab, setActiveTab] = useState("video");
   const [playedSeconds, setPlayedSeconds] = useState(0);
@@ -126,6 +127,7 @@ export default function Home() {
               <div className="flex text-blue-700 items-center justify-between">
                 {file.type === "pdf" && <BsFileEarmarkPdfFill fontSize={40} />}
                 {file.type === "word" && <FaFileWord fontSize={40} />}
+                {file.type === "media" && <FaPhotoVideo fontSize={40} />}
                 <a href={file.url} download>
                   <Button className="p-3 text-blue-700 rounded-full" variant="text"> <FaDownload fontSize={20} /></Button>
                 </a>
@@ -173,10 +175,7 @@ export default function Home() {
                   map(videos, (video, i) => (<ListItem key={i} selected={video._id === activeVideo?._id} className="bg-blue-50/70 p-3 flex-col items-start" onClick={() => {
                     setActiveVideo(video)
                   }}>
-                    <div className="flex items-center gap-4">
-                      <div className="text-blue-700 font-bold text-2xl">
-                        1
-                      </div>
+                    <div className="flex items-center gap-4">                     
                       <h2 title={video?.title} className="text-blue-700 font-bold mt-2 mb-2 overflow-hidden text-ellipsis whitespace-nowrap">{video.title}</h2>
                     </div>
                     <div className="p-1 w-full">

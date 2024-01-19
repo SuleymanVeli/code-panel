@@ -95,7 +95,8 @@ const types: CrudDataType[] = [
         type: "select",
         options: [
           'pdf',
-          'word'
+          'word',
+          'media'
         ]
       },
       {
