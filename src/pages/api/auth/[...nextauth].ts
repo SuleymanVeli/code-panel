@@ -1,4 +1,4 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import dbConnect from '@/lib/dbConnect';
@@ -30,10 +30,10 @@ const getProfile = async (profile:any) =>{
         name: profile.name,
         email: profile.email,
         image: profile.picture
-    }
+    }   
 }
 
-export default NextAuth({
+export const authOption: NextAuthOptions = {
     // Konfigürasyon ayarları
     providers: [
         GithubProvider({
@@ -147,7 +147,9 @@ export default NextAuth({
     // Enable debug messages in the console if you are having problems
     debug: false,
     // Daha fazla konfigürasyon seçenekleri
-});
+}
+
+export default NextAuth(authOption);
 
 
 

@@ -3,6 +3,11 @@ import remarkGfm from 'remark-gfm'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import {vscDarkPlus} from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
+import "@uiw/react-md-editor/markdown-editor.css";
+import "@uiw/react-markdown-preview/markdown.css";
+
+import rehypeRaw from 'rehype-raw'
+
 type PropType = {
   children: any
 }
@@ -11,7 +16,7 @@ export default function ReactMarkdown({ children }: PropType) {
 
 
   return (
-    <Markdown remarkPlugins={[remarkGfm]} components={{
+    <Markdown className={"wmde-markdown wmde-markdown-color"} remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw as any]} components={{
         code(props) {
           const { className, node, ...rest } = props
           const match = /language-(\w+)/.exec(className || '')

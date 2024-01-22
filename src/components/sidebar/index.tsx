@@ -11,6 +11,7 @@ import {
   InboxIcon,
   PowerIcon,
 } from "@heroicons/react/24/solid";
+import { FaTasks } from "react-icons/fa";
 
 import { MdOutlinePlayLesson, MdPlayLesson } from "react-icons/md";
 import Link from "next/link";
@@ -73,6 +74,13 @@ const Sidebar = () => {
             <MdOutlinePlayLesson className="h-6 w-6" />
           </Button>
         </Link>
+        <Link href={'/tasks'}
+        data-tooltip-id="link-tooltip"
+        data-tooltip-content="Tasks">
+          <Button color="white" className="flex p-3 items-center rounded-xl">
+            <FaTasks className="h-6 w-6" />
+          </Button>
+        </Link>
         {
           isAdmin ?
             <>
@@ -82,6 +90,13 @@ const Sidebar = () => {
               >
                 <Button color="white" className="flex p-3 items-center rounded-xl">
                   <MdPlayLesson className="h-6 w-6" />
+                </Button>
+              </Link>
+              <Link href={'/tasks/edit'}
+              data-tooltip-id="link-tooltip"
+              data-tooltip-content="Tasks Edit">
+                <Button color="white" className="flex p-3 items-center rounded-xl">
+                  <FaTasks className="h-6 w-6" />
                 </Button>
               </Link>
               <Link href={'/users'}
