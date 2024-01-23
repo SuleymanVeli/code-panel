@@ -1,0 +1,36 @@
+import { Card, Chip, ListItem } from "@material-tailwind/react";
+import useSWR from "swr";
+import { Response } from "@/types/response";
+import { Lesson } from "@/types/lesson";
+import { map } from "lodash";
+import fetcher from "@/utilities/fetcher";
+import Image from 'next/image';
+import Link from 'next/link';
+import { FaYoutube } from "react-icons/fa";
+import { FaRegFileAlt } from "react-icons/fa";
+import { Task } from "@/models/task";
+import { useRouter } from "next/router";
+
+export default function Home() {
+
+  const router = useRouter()
+
+  const userId = router.query.userId
+
+  const { data, error, isLoading } = useSWR<Response<Task[]>>(`/api/group/tasks/${userId}`, fetcher)
+
+  return (
+    <div className="grid gap-3">
+
+      {map(data?.data, (item:any, i) => (<Link href={`/group/tasks/${userId}/${item?._id}`}>
+        <ListItem className='bg-blue-50/40 hover:bg-blue-50/80 p-4 flex flex-row items-center gap-6'>
+            <div className='text-blue-900 font-bold'>{item?.number}</div>                       
+            <div className='text-blue-900'>{item?.name}</div>  
+            {item?.new && <Chip color="blue" value="New" />}
+
+             
+        </ListItem></Link>
+      ))}
+    </div>
+  )
+}

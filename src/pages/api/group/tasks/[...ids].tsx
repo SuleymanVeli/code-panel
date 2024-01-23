@@ -1,10 +1,8 @@
 import dbConnect from "@/lib/dbConnect";
 import { TaskModel } from "@/models";
-import { Task, TaskItem } from "@/models/task";
+import { Answer, Task, TaskItem } from "@/models/task";
 import { Response } from "@/types/response";
 import type { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { authOption } from "../auth/[...nextauth]";
 import { cloneDeep, find, forEach, map, toString } from "lodash";
 
 export default async function handler(
@@ -14,14 +12,12 @@ export default async function handler(
   try {
     await dbConnect();
 
-    const id = req.query.id;
+    const ids = req.query.ids || ['',''];
 
-    let userId = "";
+    const userId = ids[0]
+    const id = ids[1]
 
-    const session: any = await getServerSession(req, res, authOption);
-
-    if (session?.user?._id) userId = session?.user?._id;
-
+   
     if (!userId) {
       res.status(401).json({
         data: [],
@@ -69,7 +65,7 @@ export default async function handler(
     }
 
     if (req.method === "POST") {
-      const { itemId, code } = JSON.parse(req.body);
+      const { itemId, code, value, type } = JSON.parse(req.body);
 
       const item = find(data?.items, (a) => toString(a._id) === itemId);
 
@@ -85,27 +81,19 @@ export default async function handler(
       const answer = find(item.answers, (a) => a.userId === userId);
 
       if (!answer) {
-        item.answers.push({
-          code: code,
-          userId: userId,
-          status: "pending",
-        });
-
-        console.log(item);
-
-        await data?.save();
-
-        res.status(200).json({
-          status: 200,
-          data: data,
-        });
+       
+        res.status(404).json({
+            data: [],
+            status: 404,
+          });
 
         return;
       }
 
-      answer.code = code;
-      answer.status = "pending";
-
+      if (type == "comment") answer.comment = value;
+      else if(type == "status") answer.status = value;
+      else answer.code = code;     
+      
       await data?.save();
 
       res.status(200).json({

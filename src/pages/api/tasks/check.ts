@@ -2,7 +2,6 @@ import dbConnect from "@/lib/dbConnect";
 import { TaskModel } from "@/models";
 import { Task } from "@/models/task";
 import { Response } from "@/types/response";
-import { map, some } from "lodash";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

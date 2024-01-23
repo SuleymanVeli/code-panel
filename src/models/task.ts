@@ -1,3 +1,4 @@
+import { CodeType } from "@/types/task";
 import { prop } from "@typegoose/typegoose";
 import { Schema } from "mongoose";
 
@@ -36,13 +37,13 @@ export class Answer {
   _id?: string;
 
   @prop()
-  userId: string;
+  userId?: string;
 
   @prop()
-  code?: Schema.Types.Mixed;
+  code?: Schema.Types.Mixed | CodeType;
 
   @prop({ default: () => false })
-  status?: boolean;
+  status?: string;
 
   @prop()
   comment?: string;

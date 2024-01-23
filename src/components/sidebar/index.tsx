@@ -12,6 +12,8 @@ import {
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import { FaTasks } from "react-icons/fa";
+import { GoTasklist } from "react-icons/go";
+import { FaUserGroup } from "react-icons/fa6";
 
 import { MdOutlinePlayLesson, MdPlayLesson } from "react-icons/md";
 import Link from "next/link";
@@ -90,6 +92,14 @@ const Sidebar = () => {
               >
                 <Button color="white" className="flex p-3 items-center rounded-xl">
                   <MdPlayLesson className="h-6 w-6" />
+                </Button>
+              </Link>
+              <Link href={'/group'}
+              data-tooltip-id="link-tooltip"
+              data-tooltip-content="Group"
+              >
+                <Button color="white" className="flex p-3 items-center rounded-xl">
+                  <FaUserGroup  className="h-6 w-6" />
                 </Button>
               </Link>
               <Link href={'/tasks/edit'}
