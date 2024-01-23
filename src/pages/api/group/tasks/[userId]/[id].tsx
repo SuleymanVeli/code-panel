@@ -12,11 +12,8 @@ export default async function handler(
   try {
     await dbConnect();
 
-    const ids = req.query.ids || ['',''];
-
-    const userId = ids[0]
-    const id = ids[1]
-
+    const id = req.query.id;
+    const userId = req.query.userId;
    
     if (!userId) {
       res.status(401).json({
