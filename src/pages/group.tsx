@@ -10,7 +10,7 @@ import { FaYoutube } from "react-icons/fa";
 import { FaRegFileAlt } from "react-icons/fa";
 import { Task } from "@/models/task";
 
-export default function Home() {
+export default function Group() {
 
   const { data, error, isLoading } = useSWR<Response<Task[]>>('/api/group', fetcher)
 

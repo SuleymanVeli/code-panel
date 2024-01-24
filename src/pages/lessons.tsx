@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { FaYoutube } from "react-icons/fa";
 import { FaRegFileAlt } from "react-icons/fa";
 
-export default function Home() {
+export default function Lessons() {
 
   const { data, error, isLoading } = useSWR<Response<Lesson[]>>('/api/lessons', fetcher)
 

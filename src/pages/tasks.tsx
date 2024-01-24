@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Task } from "@/models/task";
 import { useUser } from "@/providers/userProvider";
 
-export default function Home() {
+export default function Tasks() {
 
   const { data, error, isLoading } = useSWR<Response<Task[]>>('/api/tasks', fetcher)
 
