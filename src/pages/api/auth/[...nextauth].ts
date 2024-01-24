@@ -108,9 +108,12 @@ export const authOption: NextAuthOptions = {
 
             await dbConnect()
 
+            
+
             const data = await UserModel.findOne({email: user.email, status: 'active'})
 
-          
+            console.log("", user.email, data)
+            
             if (!data) return false;   
             
             if(!data.signed) {
