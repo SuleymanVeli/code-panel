@@ -1,7 +1,8 @@
-import { prop } from "@typegoose/typegoose";
+import { ModelOptions, prop } from "@typegoose/typegoose";
 import { Types } from "mongoose";
 import { nanoid } from "nanoid";
 
+@ModelOptions({ schemaOptions: { collection: 'lessons' } })
 export class Lesson {
 
   _id?: string;

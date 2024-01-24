@@ -1,7 +1,8 @@
 import { CodeType } from "@/types/task";
-import { prop } from "@typegoose/typegoose";
+import { ModelOptions, prop } from "@typegoose/typegoose";
 import { Schema } from "mongoose";
 
+@ModelOptions({ schemaOptions: { collection: 'tasks' } })
 export class Task {
   _id?: string;
 
