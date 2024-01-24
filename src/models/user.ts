@@ -1,5 +1,6 @@
-import { prop } from "@typegoose/typegoose";
+import { ModelOptions, prop } from "@typegoose/typegoose";
 
+@ModelOptions({ schemaOptions: { collection: 'users' } })
 export class User {
 
   _id?: string;
