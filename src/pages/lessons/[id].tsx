@@ -141,14 +141,14 @@ export default function Home() {
         </TabPanel>
         <TabPanel value="info">
           <div>
-            {map(lesson?.infos, (info, i) => (<Card shadow={false} className=" min-h-32 mb-5 bg-blue-50/70 p-3">
-              <div className=" text-blue-700 font-bold ">
+            {map(lesson?.infos, (info, i) => (<div className="min-h-32 mb-5 p-3">
+              <div className="text-xl mb-5 text-black font-bold ">
                 {info.title}
               </div>
-              <div className=" text-blue-700">
+              <div className="">
                 <ReactMarkdown>{info.description}</ReactMarkdown>
               </div>
-            </Card>))}
+            </div>))}
           </div>
         </TabPanel>
         <TabPanel value="video">
