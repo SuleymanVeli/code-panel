@@ -222,11 +222,11 @@ export default function Page() {
     <div className="flex flex-col gap-4" >{
       map(list, (item, i) => (
         <div key={i} className="border-2 rounded-lg overflow-hidden p-3">
-          <div className="text-3xl font-sans  mb-3 capitalize mt-2 flex gap-4">
+          <div className="text-3xl font-sans  mb-3 capitalize mt-2 flex gap-4 items-center">
             {item.name}
 
-            <div className="w-[100px] h-5">
-              <Select size="md" value={item.answer?.status} onChange={(value) => handleUpdate(value, item, 'status')}>
+            <div className="w-[100px]">
+              <Select label="Status" variant="standard"  size="lg" value={item.answer?.status} onChange={(value) => handleUpdate(value, item, 'status')}>
                 <Option value="success">success</Option>
                 <Option value="wrong">wrong</Option>
                 <Option value="pending">pending</Option>
