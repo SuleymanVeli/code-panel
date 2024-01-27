@@ -4,7 +4,7 @@ import ReactMarkdown from "@/components/mkd/ReactMarkdown";
 import { useRouter } from "next/router";
 import { Response } from "@/types/response";
 import fetcher from "@/utilities/fetcher";
-import { cloneDeep, find, includes, map } from "lodash";
+import { cloneDeep, find, includes, keys, map } from "lodash";
 import { Answer, Task } from "@/models/task";
 import { TaskItem } from "@/models/task";
 import { Alert, Button, Chip, Textarea } from "@material-tailwind/react";
@@ -190,6 +190,34 @@ export default function Page() {
 
   }
 
+  const handleDownloadFiles=(code:any, type:string)=>{
+
+    let extension = '';
+    if(type === "javascript") extension = "js";
+    if(type === "css") extension = "html";
+    if(type === "html") extension = "html";
+    if(type === "csharp") extension = "cs";
+
+    for(const key of keys(code)){
+       downloadFile(code[key], key === "code"? extension : key)
+    }    
+  }
+
+  const downloadFile=(content:string,type:string)=>{
+
+    const fileName = `index.${type}`;
+
+    const blob = new Blob([content], { type: 'text/plain' });
+
+    const downloadLink = document.createElement('a');
+    downloadLink.href = URL.createObjectURL(blob);
+    downloadLink.download = fileName;
+
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+    document.body.removeChild(downloadLink);
+  }
+
   return (
     <div className="flex flex-col gap-4" >{
       map(list, (item, i) => (
@@ -219,6 +247,8 @@ export default function Page() {
           <div className="border-b-2 my-2 pb-2">
             <Textarea title='Comment' value={item.answer?.comment} onChange={(e) => handleUpdate(e.target.value, item, 'comment')} />
           </div>
+
+          {item?.answer?.code && <Button color="blue-gray" className="mb-4" onClick={()=>handleDownloadFiles(item.answer?.code, item.answerType) }>Download files</Button>}
 
           {renderCode(item.answerType, item)}
         </div>
